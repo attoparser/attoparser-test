@@ -151,12 +151,58 @@ public class AttoParserVSStandardSAXBenchmark {
     
         try {
             
-            final int iterations = 100000;
+            final int iterations = 10000;
 
-            System.out.println("\n***TEST 1***");
-            attoParserBenchmark("seedstartermng.html", iterations);
-            standardSaxBenchmark("seedstartermng.html", iterations);
-            
+            {
+                final String fileName = "test1.html";
+                final String attoTime = attoParserBenchmark(fileName, iterations);
+                final String saxTime = standardSaxBenchmark(fileName, iterations);
+                final String saxParserClass = getSAXParserClassName();
+                
+                System.out.println("\n***TEST 1***");
+                System.out.println(" * FILE:       " + fileName);
+                System.out.println(" * ITERATIONS: " + iterations);
+                System.out.println(" * SAX Impl.:  " + saxParserClass);
+                System.out.println(" * RESULTS:  ");
+                System.out.println("   > ATTO: " + attoTime);
+                System.out.println("   > SAX: " + saxTime);
+                System.out.println("************\n");
+
+            }
+
+            {
+                final String fileName = "test2.html";
+                final String attoTime = attoParserBenchmark(fileName, iterations);
+                final String saxTime = standardSaxBenchmark(fileName, iterations);
+                final String saxParserClass = getSAXParserClassName();
+                
+                System.out.println("\n***TEST 2***");
+                System.out.println(" * FILE:       " + fileName);
+                System.out.println(" * ITERATIONS: " + iterations);
+                System.out.println(" * SAX Impl.:  " + saxParserClass);
+                System.out.println(" * RESULTS:  ");
+                System.out.println("   > ATTO: " + attoTime);
+                System.out.println("   > SAX: " + saxTime);
+                System.out.println("************\n");
+
+            }
+
+            {
+                final String fileName = "test3.html";
+                final String attoTime = attoParserBenchmark(fileName, iterations);
+                final String saxTime = standardSaxBenchmark(fileName, iterations);
+                final String saxParserClass = getSAXParserClassName();
+                
+                System.out.println("\n***TEST 3***");
+                System.out.println(" * FILE:       " + fileName);
+                System.out.println(" * ITERATIONS: " + iterations);
+                System.out.println(" * SAX Impl.:  " + saxParserClass);
+                System.out.println(" * RESULTS:  ");
+                System.out.println("   > ATTO: " + attoTime);
+                System.out.println("   > SAX: " + saxTime);
+                System.out.println("************\n");
+
+            }
             
         } catch (final Throwable t) {
             t.printStackTrace(System.err);
