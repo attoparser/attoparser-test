@@ -28,9 +28,9 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.lang.time.StopWatch;
+import org.attoparser.IAttoHandler;
 import org.attoparser.IAttoParser;
-import org.attoparser.MarkupAttoParser;
-import org.attoparser.content.IAttoContentHandler;
+import org.attoparser.markup.MarkupAttoParser;
 import org.xml.sax.InputSource;
 
 public class AttoParserVSStandardSAXBenchmark {
@@ -109,7 +109,7 @@ public class AttoParserVSStandardSAXBenchmark {
                 is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
                 reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
                 
-                final IAttoContentHandler handler = new BenchmarkAttoContentHandler();
+                final IAttoHandler handler = new BenchmarkAttoHandler();
 
                 if (started) {
                     sw.resume();
