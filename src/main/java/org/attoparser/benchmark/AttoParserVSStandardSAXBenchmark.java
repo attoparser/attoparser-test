@@ -151,7 +151,7 @@ public class AttoParserVSStandardSAXBenchmark {
     
         try {
             
-            final int iterations = 10000;
+            final int iterations = 100000;
 
             {
                 final String fileName = "test1.html";

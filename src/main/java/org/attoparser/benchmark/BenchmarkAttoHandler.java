@@ -19,9 +19,9 @@
  */
 package org.attoparser.benchmark;
 
-import org.attoparser.markup.AbstractBreakDownMarkupAttoHandler;
+import org.attoparser.markup.AbstractMarkupBreakDownAttoHandler;
 
-public class BenchmarkAttoHandler extends AbstractBreakDownMarkupAttoHandler {
+public class BenchmarkAttoHandler extends AbstractMarkupBreakDownAttoHandler {
 
     
     public BenchmarkAttoHandler() {
