@@ -24,7 +24,7 @@
   <groupId>org.attoparser</groupId>
   <artifactId>attoparser-test</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0-beta2-SNAPSHOT</version>
   <name>attoparser</name>
   <url>http://www.attoparser.org</url>
 
@@ -106,7 +106,7 @@
     <dependency>
       <groupId>org.attoparser</groupId>
       <artifactId>attoparser</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0-beta2-SNAPSHOT</version>
     </dependency>
     
     <dependency>
