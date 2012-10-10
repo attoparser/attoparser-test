@@ -23,6 +23,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringWriter;
+import java.util.List;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -31,6 +33,14 @@ import org.apache.commons.lang.time.StopWatch;
 import org.attoparser.IAttoHandler;
 import org.attoparser.IAttoParser;
 import org.attoparser.markup.MarkupAttoParser;
+import org.attoparser.markup.dom.AbstractAttoDOMVisitor;
+import org.attoparser.markup.dom.AttoDOMVisitorException;
+import org.attoparser.markup.dom.DOMMarkupAttoHandler;
+import org.attoparser.markup.dom.DocType;
+import org.attoparser.markup.dom.Document;
+import org.attoparser.markup.dom.Element;
+import org.attoparser.markup.dom.Node;
+import org.attoparser.markup.dom.MarkupWriterAttoDOMVisitor;
 import org.xml.sax.InputSource;
 
 public class AttoParserVSStandardSAXBenchmark {
@@ -135,6 +145,48 @@ public class AttoParserVSStandardSAXBenchmark {
         
     }
     
+    
+
+    public static void attoDOMOutput(final String fileName) throws Exception {
+        
+        final IAttoParser parser = new MarkupAttoParser();
+        
+        InputStream is = null; 
+        Reader reader = null;
+        
+        final StopWatch sw = new StopWatch();
+        
+        try {
+            
+            is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+            reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
+
+            sw.start();
+            
+            final DOMMarkupAttoHandler handler = new DOMMarkupAttoHandler();
+            parser.parse(reader, handler);
+            
+            final Document document = handler.getDocument();
+            
+            final TestDomVisitor testVisitor = new TestDomVisitor();
+            document.visit(testVisitor);
+            
+            final StringWriter writer = new StringWriter();
+            final MarkupWriterAttoDOMVisitor visitor = new MarkupWriterAttoDOMVisitor(writer);
+            
+            document.visit(visitor);
+            
+            sw.stop();
+            
+            System.out.println(writer.toString() + "\n\n\nIN: " + sw.toString() + "\n\n");
+
+        } finally {
+            try { if (reader != null) reader.close(); } catch (final Exception ignored) { /* ignored */}
+            try { if (is != null) is.close(); } catch (final Exception ignored) { /* ignored */}
+        }
+        
+    }
+    
 
     private static final String getSAXParserClassName() throws Exception {
         final SAXParserFactory parserFactory = SAXParserFactory.newInstance();
@@ -155,6 +207,7 @@ public class AttoParserVSStandardSAXBenchmark {
 
             {
                 final String fileName = "test1.html";
+                attoDOMOutput(fileName);
                 final String attoTime = attoParserBenchmark(fileName, iterations);
                 final String saxTime = standardSaxBenchmark(fileName, iterations);
                 final String saxParserClass = getSAXParserClassName();
@@ -167,7 +220,7 @@ public class AttoParserVSStandardSAXBenchmark {
                 System.out.println("   > ATTO: " + attoTime);
                 System.out.println("   > SAX: " + saxTime);
                 System.out.println("************\n");
-
+                
             }
 
             {
@@ -213,6 +266,49 @@ public class AttoParserVSStandardSAXBenchmark {
     
     private AttoParserVSStandardSAXBenchmark() {
         super();
+    }
+    
+    
+    
+    static class TestDomVisitor extends AbstractAttoDOMVisitor {
+
+        @Override
+        public void visitDocType(DocType docType)
+                throws AttoDOMVisitorException {
+
+            super.visitDocType(docType);
+            
+            docType.setSystemId("lelele");
+            
+        }
+
+        @Override
+        public void visitStandaloneElement(final Element element)
+                throws AttoDOMVisitorException {
+            super.visitStandaloneElement(element);
+            element.clearAttributes();
+            element.setStandalone(false);
+        }
+
+        @Override
+        public void visitOpenElement(Element element)
+                throws AttoDOMVisitorException {
+
+            super.visitOpenElement(element);
+            
+            element.removeAttributeIgnoreCase("HREF");
+            element.removeAttributeIgnoreCase("HREF");
+            
+            if (element.getName().equals("p")) {
+                final Element e = new Element("cucu",true);
+                final List<Node> children = element.getChildren();
+                if (children.size() > 0) {
+                    element.insertChildAfter(children.get(0), e);
+                }
+            }
+            
+        }
+        
     }
     
 }
