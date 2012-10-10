@@ -177,8 +177,6 @@ public class AttoParserVSStandardSAXBenchmark {
             document.visit(visitor);
             
             sw.stop();
-            
-            System.out.println(writer.toString() + "\n\n\nIN: " + sw.toString() + "\n\n");
 
         } finally {
             try { if (reader != null) reader.close(); } catch (final Exception ignored) { /* ignored */}

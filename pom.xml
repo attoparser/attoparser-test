@@ -24,8 +24,8 @@
   <groupId>org.attoparser</groupId>
   <artifactId>attoparser-test</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-beta2</version>
-  <name>attoparser</name>
+  <version>1.0</version>
+  <name>attoparser-test</name>
   <url>http://www.attoparser.org</url>
 
   <description>Minimum and fast markup parser for Java</description>
@@ -116,7 +116,7 @@
     <dependency>
       <groupId>org.attoparser</groupId>
       <artifactId>attoparser</artifactId>
-      <version>1.0-beta2</version>
+      <version>1.0</version>
     </dependency>
     
     <dependency>
