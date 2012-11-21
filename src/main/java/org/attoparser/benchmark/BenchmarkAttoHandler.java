@@ -20,13 +20,13 @@
 package org.attoparser.benchmark;
 
 import org.attoparser.markup.AbstractDetailedMarkupAttoHandler;
-import org.attoparser.markup.DocumentRestrictions;
+import org.attoparser.markup.xml.XmlParsing;
 
 public class BenchmarkAttoHandler extends AbstractDetailedMarkupAttoHandler {
 
     
     public BenchmarkAttoHandler() {
-        super(DocumentRestrictions.wellFormed());
+        super(XmlParsing.xmlParsingConfiguration());
     }
     
 
