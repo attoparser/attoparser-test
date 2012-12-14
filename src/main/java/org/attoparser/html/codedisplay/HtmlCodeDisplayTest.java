@@ -63,9 +63,9 @@ public class HtmlCodeDisplayTest {
             test2Reader = new InputStreamReader(test2IS);
             test3Reader = new InputStreamReader(test3IS);
 
-            final File test1File = new File(outputFolder +  File.separator + FILE_NAME_TEST1); 
-            final File test2File = new File(outputFolder +  File.separator + FILE_NAME_TEST2); 
-            final File test3File = new File(outputFolder +  File.separator + FILE_NAME_TEST3); 
+            final File test1File = new File(outputFolder +  File.separator + "result_" + FILE_NAME_TEST1); 
+            final File test2File = new File(outputFolder +  File.separator + "result_" + FILE_NAME_TEST2); 
+            final File test3File = new File(outputFolder +  File.separator + "result_" + FILE_NAME_TEST3); 
             
             test1Writer = new FileWriter(test1File);
             test2Writer = new FileWriter(test2File);
@@ -73,9 +73,9 @@ public class HtmlCodeDisplayTest {
 
             final MarkupAttoParser parser = new MarkupAttoParser();
             
-            final HtmlCodeDisplayAttoHandler test1Handler = new HtmlCodeDisplayAttoHandler(test1Writer);
-            final HtmlCodeDisplayAttoHandler test2Handler = new HtmlCodeDisplayAttoHandler(test2Writer);
-            final HtmlCodeDisplayAttoHandler test3Handler = new HtmlCodeDisplayAttoHandler(test3Writer);
+            final HtmlCodeDisplayAttoHandler test1Handler = new HtmlCodeDisplayAttoHandler(FILE_NAME_TEST1, test1Writer, false);
+            final HtmlCodeDisplayAttoHandler test2Handler = new HtmlCodeDisplayAttoHandler(FILE_NAME_TEST2, test2Writer, false);
+            final HtmlCodeDisplayAttoHandler test3Handler = new HtmlCodeDisplayAttoHandler(FILE_NAME_TEST3, test3Writer, false);
             
             parser.parse(test1Reader, test1Handler);
             parser.parse(test2Reader, test2Handler);
