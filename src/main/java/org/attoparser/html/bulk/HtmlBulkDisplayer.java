@@ -82,7 +82,7 @@ public class HtmlBulkDisplayer {
 
             System.out.print(fileInTestFolderName);
 
-            System.out.print("[PARSING]");
+            System.out.print("[PROCESSING]");
 
             parser.parse(fileInTestFolderReader, handler);
 
@@ -90,21 +90,7 @@ public class HtmlBulkDisplayer {
             testOutputWriter.close();
             testOutputStream.close();
 
-            System.out.print("[PARSED]");
-
-            final FileInputStream testOutputCheckStream = new FileInputStream(testOutput);
-            final List<String> outputLines = IOUtils.readLines(testOutputCheckStream, "UTF-8");
-
-            final FileInputStream testInputCheckStream = new FileInputStream(fileInTestFolder);
-            final List<String> inputLines = IOUtils.readLines(testInputCheckStream, "UTF-8");
-
-            System.out.print("[CHECKING]");
-
-            if (outputLines.equals(inputLines)) {
-                System.out.print("[OK]");
-            } else {
-                System.out.print("[KO]");
-            }
+            System.out.print("[PROCESSED]");
 
             System.out.println();
 
