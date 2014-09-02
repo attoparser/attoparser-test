@@ -19,14 +19,32 @@
  */
 package org.attoparser.benchmark;
 
+import org.attoparser.markup.AbstractDetailedMarkupAttoHandler;
+import org.attoparser.markup.MarkupParsingConfiguration;
 import org.attoparser.markup.html.AbstractStandardNonValidatingHtmlAttoHandler;
 import org.attoparser.markup.html.HtmlParsing;
 
-public class BenchmarkAttoHandler extends AbstractStandardNonValidatingHtmlAttoHandler {
+public class BenchmarkAttoHandler extends AbstractDetailedMarkupAttoHandler {
+
+    private static MarkupParsingConfiguration CONFIG;
+
+    static {
+        CONFIG = new MarkupParsingConfiguration();
+        CONFIG.setCaseSensitive(false);
+        CONFIG.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.NO_BALANCING);
+        CONFIG.setRequireUniqueAttributesInElement(false);
+        CONFIG.setRequireXmlWellFormedAttributeValues(false);
+        CONFIG.setUniqueRootElementPresence(MarkupParsingConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
+        CONFIG.getPrologParsingConfiguration().setValidateProlog(false);
+        CONFIG.getPrologParsingConfiguration().setPrologPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
+        CONFIG.getPrologParsingConfiguration().setXmlDeclarationPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
+        CONFIG.getPrologParsingConfiguration().setDoctypePresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
+        CONFIG.getPrologParsingConfiguration().setRequireDoctypeKeywordsUpperCase(false);
+    }
 
     
     public BenchmarkAttoHandler() {
-        super(HtmlParsing.htmlParsingConfiguration());
+        super(CONFIG);
     }
     
 
