@@ -27,6 +27,8 @@ import java.io.Reader;
 import java.io.Writer;
 
 import org.attoparser.markup.MarkupAttoParser;
+import org.attoparser.markup.MarkupParsingConfiguration;
+import org.attoparser.markup.html.HtmlParsing;
 import org.attoparser.markup.html.trace.HtmlCodeDisplayAttoHandler;
 
 public class HtmlCodeDisplayTest {
@@ -72,8 +74,11 @@ public class HtmlCodeDisplayTest {
             test3Writer = new FileWriter(test3File);
 
             final MarkupAttoParser parser = new MarkupAttoParser();
-            
-            final HtmlCodeDisplayAttoHandler test1Handler = new HtmlCodeDisplayAttoHandler(FILE_NAME_TEST1, test1Writer, false);
+
+            final MarkupParsingConfiguration config = HtmlParsing.baseHtmlMarkupParsingConfiguration();
+            config.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.AUTO_CLOSE);
+
+            final HtmlCodeDisplayAttoHandler test1Handler = new HtmlCodeDisplayAttoHandler(FILE_NAME_TEST1, test1Writer, config, false);
             final HtmlCodeDisplayAttoHandler test2Handler = new HtmlCodeDisplayAttoHandler(FILE_NAME_TEST2, test2Writer, false);
             final HtmlCodeDisplayAttoHandler test3Handler = new HtmlCodeDisplayAttoHandler(FILE_NAME_TEST3, test3Writer, false);
             

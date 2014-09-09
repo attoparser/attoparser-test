@@ -5,8 +5,9 @@
 
   <head>
     <title>Good Thymes Virtual Grocery</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" media="all" href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" media="all" href="../../css/gtvg.css" th:href="@{/css/gtvg.css}">
   </head>
 
   <body>
@@ -24,16 +25,17 @@
     
     <p>Please select an option</p>
     <ol>
-      <li><a href="product/list.html" th:href="@{/product/list}">Product List</a></li>
-      <li><a href="order/list.html" th:href="@{/order/list}">Order List</a></li>
-      <li><a href="subscribe.html" th:href="@{/subscribe}">Subscribe to our Newsletter</a></li>
-      <li><a href="userprofile.html" th:href="@{/userprofile}">See User Profile</a></li>
+      <li>Product List
+      <li><a href="order/list.html" th:href="@{/order/list}">Order List
+      <li><a href="subscribe.html" th:href="@{/subscribe}">Subscribe to our Newsletter</a>
+      <li><a href="userprofile.html" th:href="@{/userprofile}">See User Profile
     </ol>
       
     <p>Now you are looking at a <span th:text="'working web application'">template file</span>.</p>
   
     <div th:include="footer::copy">copy 2011 The Static Templates</div>
-  
+   </p>
+
   </body>
   
 </html>
