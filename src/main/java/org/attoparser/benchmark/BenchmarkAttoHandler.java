@@ -19,19 +19,17 @@
  */
 package org.attoparser.benchmark;
 
-import org.attoparser.markup.AbstractDetailedMarkupAttoHandler;
 import org.attoparser.markup.MarkupParsingConfiguration;
 import org.attoparser.markup.html.AbstractStandardNonValidatingHtmlAttoHandler;
-import org.attoparser.markup.html.HtmlParsing;
 
-public class BenchmarkAttoHandler extends AbstractDetailedMarkupAttoHandler {
+public class BenchmarkAttoHandler extends AbstractStandardNonValidatingHtmlAttoHandler {
 
     private static MarkupParsingConfiguration CONFIG;
 
     static {
         CONFIG = new MarkupParsingConfiguration();
         CONFIG.setCaseSensitive(false);
-        CONFIG.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.NO_BALANCING);
+        CONFIG.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.AUTO_CLOSE);
         CONFIG.setRequireUniqueAttributesInElement(false);
         CONFIG.setRequireXmlWellFormedAttributeValues(false);
         CONFIG.setUniqueRootElementPresence(MarkupParsingConfiguration.UniqueRootElementPresence.NOT_VALIDATED);

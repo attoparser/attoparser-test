@@ -37,6 +37,7 @@ public class HtmlCodeDisplayTest {
     private static final String FILE_NAME_TEST1 = "test1.html";
     private static final String FILE_NAME_TEST2 = "test2.html";
     private static final String FILE_NAME_TEST3 = "test3.html";
+    private static final String FILE_NAME_TEST4 = "test4.html";
 
     
     
@@ -52,48 +53,58 @@ public class HtmlCodeDisplayTest {
         Reader test1Reader = null;
         Reader test2Reader = null;
         Reader test3Reader = null;
+        Reader test4Reader = null;
         Writer test1Writer = null;
         Writer test2Writer = null;
         Writer test3Writer = null;
+        Writer test4Writer = null;
         try {
             
             final InputStream test1IS = Thread.currentThread().getContextClassLoader().getResourceAsStream(FILE_NAME_TEST1);
             final InputStream test2IS = Thread.currentThread().getContextClassLoader().getResourceAsStream(FILE_NAME_TEST2);
             final InputStream test3IS = Thread.currentThread().getContextClassLoader().getResourceAsStream(FILE_NAME_TEST3);
-            
+            final InputStream test4IS = Thread.currentThread().getContextClassLoader().getResourceAsStream(FILE_NAME_TEST4);
+
             test1Reader = new InputStreamReader(test1IS);
             test2Reader = new InputStreamReader(test2IS);
             test3Reader = new InputStreamReader(test3IS);
+            test4Reader = new InputStreamReader(test4IS);
 
             final File test1File = new File(outputFolder +  File.separator + "result_" + FILE_NAME_TEST1); 
             final File test2File = new File(outputFolder +  File.separator + "result_" + FILE_NAME_TEST2); 
-            final File test3File = new File(outputFolder +  File.separator + "result_" + FILE_NAME_TEST3); 
-            
+            final File test3File = new File(outputFolder +  File.separator + "result_" + FILE_NAME_TEST3);
+            final File test4File = new File(outputFolder +  File.separator + "result_" + FILE_NAME_TEST4);
+
             test1Writer = new FileWriter(test1File);
             test2Writer = new FileWriter(test2File);
             test3Writer = new FileWriter(test3File);
+            test4Writer = new FileWriter(test4File);
 
             final MarkupAttoParser parser = new MarkupAttoParser();
 
             final MarkupParsingConfiguration config = HtmlParsing.baseHtmlMarkupParsingConfiguration();
             config.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.AUTO_CLOSE);
 
-            final HtmlCodeDisplayAttoHandler test1Handler = new HtmlCodeDisplayAttoHandler(FILE_NAME_TEST1, test1Writer, config, false);
+            final HtmlCodeDisplayAttoHandler test1Handler = new HtmlCodeDisplayAttoHandler(FILE_NAME_TEST1, test1Writer, false);
             final HtmlCodeDisplayAttoHandler test2Handler = new HtmlCodeDisplayAttoHandler(FILE_NAME_TEST2, test2Writer, false);
             final HtmlCodeDisplayAttoHandler test3Handler = new HtmlCodeDisplayAttoHandler(FILE_NAME_TEST3, test3Writer, false);
-            
+            final HtmlCodeDisplayAttoHandler test4Handler = new HtmlCodeDisplayAttoHandler(FILE_NAME_TEST4, test4Writer, config, false);
+
             parser.parse(test1Reader, test1Handler);
             parser.parse(test2Reader, test2Handler);
             parser.parse(test3Reader, test3Handler);
-            
+            parser.parse(test4Reader, test4Handler);
+
             
         } finally {
             try { if (test1Reader != null) { test1Reader.close(); } } catch (final Exception ignored) { /* ignored */ }
             try { if (test2Reader != null) { test2Reader.close(); } } catch (final Exception ignored) { /* ignored */ }
             try { if (test3Reader != null) { test3Reader.close(); } } catch (final Exception ignored) { /* ignored */ }
+            try { if (test4Reader != null) { test4Reader.close(); } } catch (final Exception ignored) { /* ignored */ }
             try { if (test1Writer != null) { test1Writer.close(); } } catch (final Exception ignored) { /* ignored */ }
             try { if (test2Writer != null) { test2Writer.close(); } } catch (final Exception ignored) { /* ignored */ }
             try { if (test3Writer != null) { test3Writer.close(); } } catch (final Exception ignored) { /* ignored */ }
+            try { if (test4Writer != null) { test4Writer.close(); } } catch (final Exception ignored) { /* ignored */ }
         }
         
         
