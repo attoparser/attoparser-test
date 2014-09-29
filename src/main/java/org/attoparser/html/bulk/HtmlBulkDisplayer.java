@@ -24,15 +24,30 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.attoparser.markup.MarkupAttoParser;
-import org.attoparser.markup.duplicate.DuplicatingDetailedMarkupAttoHandler;
-import org.attoparser.markup.html.trace.HtmlCodeDisplayAttoHandler;
+import org.attoparser.markup.MarkupParsingConfiguration;
+import org.attoparser.markup.html.HtmlParsing;
+import org.attoparser.markup.html.handlers.prettycode.PrettyCodeDisplayHtmlAttoHandler;
 
 public class HtmlBulkDisplayer {
+
+
+    private static MarkupParsingConfiguration MARKUP_PARSING_CONFIG;
+
+    static {
+        MARKUP_PARSING_CONFIG = new MarkupParsingConfiguration();
+        MARKUP_PARSING_CONFIG.setCaseSensitive(false);
+        MARKUP_PARSING_CONFIG.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.AUTO_CLOSE);
+        MARKUP_PARSING_CONFIG.setRequireUniqueAttributesInElement(false);
+        MARKUP_PARSING_CONFIG.setRequireXmlWellFormedAttributeValues(false);
+        MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(MarkupParsingConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
+        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setValidateProlog(false);
+        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setPrologPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
+        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setXmlDeclarationPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
+        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setDoctypePresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
+        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setRequireDoctypeKeywordsUpperCase(false);
+    }
 
 
 
@@ -52,7 +67,7 @@ public class HtmlBulkDisplayer {
             System.exit(1);
         }
 
-        final MarkupAttoParser parser = new MarkupAttoParser();
+        final MarkupAttoParser parser = new MarkupAttoParser(MARKUP_PARSING_CONFIG);
 
         final File displayFolder = new File(testFolder.getAbsolutePath() + File.separator + "display");
         displayFolder.mkdir();
@@ -78,7 +93,7 @@ public class HtmlBulkDisplayer {
             final FileOutputStream testOutputStream = new FileOutputStream(testOutput);
             final OutputStreamWriter testOutputWriter = new OutputStreamWriter(testOutputStream, "UTF-8");
 
-            final HtmlCodeDisplayAttoHandler handler = new HtmlCodeDisplayAttoHandler(testOutput.getName(), testOutputWriter, true);
+            final PrettyCodeDisplayHtmlAttoHandler handler = new PrettyCodeDisplayHtmlAttoHandler(testOutput.getName(), testOutputWriter, true);
 
             System.out.print(fileInTestFolderName);
 

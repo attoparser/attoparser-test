@@ -29,7 +29,7 @@ import java.io.Writer;
 import org.attoparser.markup.MarkupAttoParser;
 import org.attoparser.markup.MarkupParsingConfiguration;
 import org.attoparser.markup.html.HtmlParsing;
-import org.attoparser.markup.html.trace.HtmlCodeDisplayAttoHandler;
+import org.attoparser.markup.html.handlers.prettycode.PrettyCodeDisplayHtmlAttoHandler;
 
 public class HtmlCodeDisplayTest {
     
@@ -80,20 +80,23 @@ public class HtmlCodeDisplayTest {
             test3Writer = new FileWriter(test3File);
             test4Writer = new FileWriter(test4File);
 
-            final MarkupAttoParser parser = new MarkupAttoParser();
+            final PrettyCodeDisplayHtmlAttoHandler test1Handler = new PrettyCodeDisplayHtmlAttoHandler(FILE_NAME_TEST1, test1Writer, false);
+            final PrettyCodeDisplayHtmlAttoHandler test2Handler = new PrettyCodeDisplayHtmlAttoHandler(FILE_NAME_TEST2, test2Writer, false);
+            final PrettyCodeDisplayHtmlAttoHandler test3Handler = new PrettyCodeDisplayHtmlAttoHandler(FILE_NAME_TEST3, test3Writer, false);
+            final PrettyCodeDisplayHtmlAttoHandler test4Handler = new PrettyCodeDisplayHtmlAttoHandler(FILE_NAME_TEST4, test4Writer, false);
 
             final MarkupParsingConfiguration config = HtmlParsing.baseHtmlMarkupParsingConfiguration();
-            config.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.AUTO_CLOSE);
 
-            final HtmlCodeDisplayAttoHandler test1Handler = new HtmlCodeDisplayAttoHandler(FILE_NAME_TEST1, test1Writer, false);
-            final HtmlCodeDisplayAttoHandler test2Handler = new HtmlCodeDisplayAttoHandler(FILE_NAME_TEST2, test2Writer, false);
-            final HtmlCodeDisplayAttoHandler test3Handler = new HtmlCodeDisplayAttoHandler(FILE_NAME_TEST3, test3Writer, false);
-            final HtmlCodeDisplayAttoHandler test4Handler = new HtmlCodeDisplayAttoHandler(FILE_NAME_TEST4, test4Writer, config, false);
+            final MarkupParsingConfiguration autoCloseConfig = HtmlParsing.baseHtmlMarkupParsingConfiguration();
+            autoCloseConfig.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.AUTO_CLOSE);
 
-            parser.parse(test1Reader, test1Handler);
-            parser.parse(test2Reader, test2Handler);
-            parser.parse(test3Reader, test3Handler);
-            parser.parse(test4Reader, test4Handler);
+            final MarkupAttoParser htmlStandardParser = new MarkupAttoParser(config);
+            final MarkupAttoParser htmlAutoCloseStandardParser = new MarkupAttoParser(autoCloseConfig);
+
+            htmlStandardParser.parse(test1Reader, test1Handler);
+            htmlStandardParser.parse(test2Reader, test2Handler);
+            htmlStandardParser.parse(test3Reader, test3Handler);
+            htmlAutoCloseStandardParser.parse(test4Reader, test4Handler);
 
             
         } finally {

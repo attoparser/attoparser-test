@@ -28,10 +28,28 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.attoparser.markup.MarkupAttoParser;
-import org.attoparser.markup.duplicate.DuplicatingDetailedMarkupAttoHandler;
+import org.attoparser.markup.MarkupParsingConfiguration;
+import org.attoparser.markup.handlers.directoutput.DirectOutputMarkupAttoHandler;
+import org.attoparser.markup.html.HtmlParsing;
 
 public class HtmlBulkTester {
 
+
+    private static MarkupParsingConfiguration MARKUP_PARSING_CONFIG;
+
+    static {
+        MARKUP_PARSING_CONFIG = new MarkupParsingConfiguration();
+        MARKUP_PARSING_CONFIG.setCaseSensitive(false);
+        MARKUP_PARSING_CONFIG.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.AUTO_CLOSE);
+        MARKUP_PARSING_CONFIG.setRequireUniqueAttributesInElement(false);
+        MARKUP_PARSING_CONFIG.setRequireXmlWellFormedAttributeValues(false);
+        MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(MarkupParsingConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
+        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setValidateProlog(false);
+        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setPrologPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
+        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setXmlDeclarationPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
+        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setDoctypePresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
+        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setRequireDoctypeKeywordsUpperCase(false);
+    }
 
 
     public static void main(final String[] args) throws Exception {
@@ -50,7 +68,7 @@ public class HtmlBulkTester {
             System.exit(1);
         }
 
-        final MarkupAttoParser parser = new MarkupAttoParser();
+        final MarkupAttoParser parser = new MarkupAttoParser(MARKUP_PARSING_CONFIG);
 
         System.out.println("Using temporary folder for output: " + System.getProperty("java.io.tmpdir"));
 
@@ -71,7 +89,7 @@ public class HtmlBulkTester {
             final FileOutputStream testOutputStream = new FileOutputStream(testOutput);
             final OutputStreamWriter testOutputWriter = new OutputStreamWriter(testOutputStream, "UTF-8");
 
-            final DuplicatingDetailedMarkupAttoHandler handler = new DuplicatingDetailedMarkupAttoHandler(testOutputWriter);
+            final DirectOutputMarkupAttoHandler handler = new DirectOutputMarkupAttoHandler(testOutputWriter);
 
             System.out.print(fileInTestFolderName);
 

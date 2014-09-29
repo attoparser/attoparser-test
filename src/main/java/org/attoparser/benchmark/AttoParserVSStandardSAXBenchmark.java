@@ -32,15 +32,36 @@ import org.apache.commons.lang.time.StopWatch;
 import org.attoparser.IAttoHandler;
 import org.attoparser.IAttoParser;
 import org.attoparser.markup.MarkupAttoParser;
+import org.attoparser.markup.MarkupParsingConfiguration;
 import org.attoparser.markup.dom.IDocument;
-import org.attoparser.markup.xml.DOMXmlAttoHandler;
-import org.attoparser.markup.xml.XmlDOMWriter;
+import org.attoparser.markup.xml.dom.DOMXmlAttoHandler;
+import org.attoparser.markup.xml.dom.XmlDOMWriter;
 import org.xml.sax.InputSource;
 
 public class AttoParserVSStandardSAXBenchmark {
 
 
-    
+
+
+    private static MarkupParsingConfiguration MARKUP_PARSING_CONFIG;
+
+    static {
+        MARKUP_PARSING_CONFIG = new MarkupParsingConfiguration();
+        MARKUP_PARSING_CONFIG.setCaseSensitive(false);
+        MARKUP_PARSING_CONFIG.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.AUTO_CLOSE);
+        MARKUP_PARSING_CONFIG.setRequireUniqueAttributesInElement(false);
+        MARKUP_PARSING_CONFIG.setRequireXmlWellFormedAttributeValues(false);
+        MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(MarkupParsingConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
+        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setValidateProlog(false);
+        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setPrologPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
+        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setXmlDeclarationPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
+        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setDoctypePresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
+        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setRequireDoctypeKeywordsUpperCase(false);
+    }
+
+
+
+
 
     public static String standardSaxBenchmark(final String fileName, final int iterations) throws Exception {
         
@@ -98,7 +119,7 @@ public class AttoParserVSStandardSAXBenchmark {
 
     public static String attoParserBenchmark(final String fileName, final int iterations) throws Exception {
         
-        final IAttoParser parser = new MarkupAttoParser();
+        final IAttoParser parser = new MarkupAttoParser(MARKUP_PARSING_CONFIG);
         
         final StopWatch sw = new StopWatch();
         boolean started = false;
@@ -143,7 +164,7 @@ public class AttoParserVSStandardSAXBenchmark {
 
     public static void attoDOMOutput(final String fileName) throws Exception {
         
-        final IAttoParser parser = new MarkupAttoParser();
+        final IAttoParser parser = new MarkupAttoParser(MARKUP_PARSING_CONFIG);
         
         InputStream is = null; 
         Reader reader = null;
