@@ -29,13 +29,13 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.lang.time.StopWatch;
-import org.attoparser.IAttoHandler;
 import org.attoparser.IAttoParser;
+import org.attoparser.markup.IMarkupAttoHandler;
 import org.attoparser.markup.MarkupAttoParser;
 import org.attoparser.markup.MarkupParsingConfiguration;
+import org.attoparser.markup.dom.DOMBuilderMarkupAttoHandler;
 import org.attoparser.markup.dom.IDocument;
-import org.attoparser.markup.xml.dom.DOMXmlAttoHandler;
-import org.attoparser.markup.xml.dom.XmlDOMWriter;
+import org.attoparser.markup.dom.XmlDOMWriter;
 import org.xml.sax.InputSource;
 
 public class AttoParserVSStandardSAXBenchmark {
@@ -134,7 +134,7 @@ public class AttoParserVSStandardSAXBenchmark {
                 is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
                 reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
                 
-                final IAttoHandler handler = new BenchmarkAttoHandler();
+                final IMarkupAttoHandler handler = BenchmarkAttoHandlerFactory.getBenchmkarpMarkupAttoHandler();
 
                 if (started) {
                     sw.resume();
@@ -178,7 +178,7 @@ public class AttoParserVSStandardSAXBenchmark {
 
             sw.start();
             
-            final DOMXmlAttoHandler handler = new DOMXmlAttoHandler();
+            final DOMBuilderMarkupAttoHandler handler = new DOMBuilderMarkupAttoHandler();
             parser.parse(reader, handler);
             
             final IDocument document = handler.getDocument();

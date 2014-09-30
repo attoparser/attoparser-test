@@ -19,10 +19,23 @@
  */
 package org.attoparser.benchmark;
 
-import org.attoparser.markup.html.AbstractHtmlAttoHandler;
+import org.attoparser.markup.AbstractMarkupAttoHandler;
+import org.attoparser.markup.IMarkupAttoHandler;
+import org.attoparser.markup.html.HtmlMarkupAttoHandler;
 
 
-public class BenchmarkAttoHandler extends AbstractHtmlAttoHandler {
+public class BenchmarkAttoHandlerFactory {
+
+
+    public static IMarkupAttoHandler getBenchmkarpMarkupAttoHandler() {
+        return new HtmlMarkupAttoHandler(new IgnoreAllMarkupAttoHandler());
+    }
+
+
+
+    private static class IgnoreAllMarkupAttoHandler extends AbstractMarkupAttoHandler {
+        // Just ignore every event
+    }
 
 
 }

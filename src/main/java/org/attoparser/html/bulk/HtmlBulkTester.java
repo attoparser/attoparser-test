@@ -29,8 +29,7 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.attoparser.markup.MarkupAttoParser;
 import org.attoparser.markup.MarkupParsingConfiguration;
-import org.attoparser.markup.handlers.directoutput.DirectOutputMarkupAttoHandler;
-import org.attoparser.markup.html.HtmlParsing;
+import org.attoparser.markup.directoutput.DirectOutputMarkupAttoHandler;
 
 public class HtmlBulkTester {
 

@@ -27,8 +27,7 @@ import java.io.OutputStreamWriter;
 
 import org.attoparser.markup.MarkupAttoParser;
 import org.attoparser.markup.MarkupParsingConfiguration;
-import org.attoparser.markup.html.HtmlParsing;
-import org.attoparser.markup.html.handlers.prettycode.PrettyCodeDisplayHtmlAttoHandler;
+import org.attoparser.markup.prettyhtmldisplay.PrettyHtmlDisplayMarkupAttoHandler;
 
 public class HtmlBulkDisplayer {
 
@@ -93,7 +92,7 @@ public class HtmlBulkDisplayer {
             final FileOutputStream testOutputStream = new FileOutputStream(testOutput);
             final OutputStreamWriter testOutputWriter = new OutputStreamWriter(testOutputStream, "UTF-8");
 
-            final PrettyCodeDisplayHtmlAttoHandler handler = new PrettyCodeDisplayHtmlAttoHandler(testOutput.getName(), testOutputWriter, true);
+            final PrettyHtmlDisplayMarkupAttoHandler handler = new PrettyHtmlDisplayMarkupAttoHandler(testOutput.getName(), testOutputWriter, true);
 
             System.out.print(fileInTestFolderName);
 
