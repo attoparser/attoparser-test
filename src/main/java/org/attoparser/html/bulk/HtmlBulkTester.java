@@ -27,9 +27,9 @@ import java.io.OutputStreamWriter;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.attoparser.markup.MarkupAttoParser;
-import org.attoparser.markup.MarkupParsingConfiguration;
-import org.attoparser.markup.directoutput.DirectOutputMarkupAttoHandler;
+import org.attoparser.MarkupAttoParser;
+import org.attoparser.MarkupParsingConfiguration;
+import org.attoparser.directoutput.DirectOutputMarkupAttoHandler;
 
 public class HtmlBulkTester {
 

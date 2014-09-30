@@ -29,13 +29,13 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.lang.time.StopWatch;
-import org.attoparser.IAttoParser;
-import org.attoparser.markup.IMarkupAttoHandler;
-import org.attoparser.markup.MarkupAttoParser;
-import org.attoparser.markup.MarkupParsingConfiguration;
-import org.attoparser.markup.dom.DOMBuilderMarkupAttoHandler;
-import org.attoparser.markup.dom.IDocument;
-import org.attoparser.markup.dom.XmlDOMWriter;
+import org.attoparser.IMarkupAttoParser;
+import org.attoparser.IMarkupAttoHandler;
+import org.attoparser.MarkupAttoParser;
+import org.attoparser.MarkupParsingConfiguration;
+import org.attoparser.dom.DOMBuilderMarkupAttoHandler;
+import org.attoparser.dom.IDocument;
+import org.attoparser.dom.XmlDOMWriter;
 import org.xml.sax.InputSource;
 
 public class AttoParserVSStandardSAXBenchmark {
@@ -119,7 +119,7 @@ public class AttoParserVSStandardSAXBenchmark {
 
     public static String attoParserBenchmark(final String fileName, final int iterations) throws Exception {
         
-        final IAttoParser parser = new MarkupAttoParser(MARKUP_PARSING_CONFIG);
+        final IMarkupAttoParser parser = new MarkupAttoParser(MARKUP_PARSING_CONFIG);
         
         final StopWatch sw = new StopWatch();
         boolean started = false;
@@ -164,7 +164,7 @@ public class AttoParserVSStandardSAXBenchmark {
 
     public static void attoDOMOutput(final String fileName) throws Exception {
         
-        final IAttoParser parser = new MarkupAttoParser(MARKUP_PARSING_CONFIG);
+        final IMarkupAttoParser parser = new MarkupAttoParser(MARKUP_PARSING_CONFIG);
         
         InputStream is = null; 
         Reader reader = null;

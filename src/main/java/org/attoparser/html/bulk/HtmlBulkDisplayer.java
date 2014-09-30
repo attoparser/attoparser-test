@@ -25,9 +25,9 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-import org.attoparser.markup.MarkupAttoParser;
-import org.attoparser.markup.MarkupParsingConfiguration;
-import org.attoparser.markup.prettyhtmldisplay.PrettyHtmlDisplayMarkupAttoHandler;
+import org.attoparser.MarkupAttoParser;
+import org.attoparser.MarkupParsingConfiguration;
+import org.attoparser.prettyhtmldisplay.PrettyHtmlDisplayMarkupAttoHandler;
 
 public class HtmlBulkDisplayer {
 

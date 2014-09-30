@@ -19,9 +19,9 @@
  */
 package org.attoparser.benchmark;
 
-import org.attoparser.markup.AbstractMarkupAttoHandler;
-import org.attoparser.markup.IMarkupAttoHandler;
-import org.attoparser.markup.html.HtmlMarkupAttoHandler;
+import org.attoparser.AbstractMarkupAttoHandler;
+import org.attoparser.IMarkupAttoHandler;
+import org.attoparser.html.HtmlMarkupAttoHandler;
 
 
 public class BenchmarkAttoHandlerFactory {
