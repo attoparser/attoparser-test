@@ -36,6 +36,7 @@ import org.attoparser.MarkupParsingConfiguration;
 import org.attoparser.dom.DOMBuilderMarkupAttoHandler;
 import org.attoparser.dom.IDocument;
 import org.attoparser.dom.XmlDOMWriter;
+import org.attoparser.html.HtmlMarkupAttoHandler;
 import org.xml.sax.InputSource;
 
 public class AttoParserVSStandardSAXBenchmark {
@@ -44,11 +45,13 @@ public class AttoParserVSStandardSAXBenchmark {
 
 
     private static MarkupParsingConfiguration MARKUP_PARSING_CONFIG;
+    private static MarkupParsingConfiguration HTML_MARKUP_PARSING_CONFIG;
 
     static {
+
         MARKUP_PARSING_CONFIG = new MarkupParsingConfiguration();
-        MARKUP_PARSING_CONFIG.setCaseSensitive(false);
-        MARKUP_PARSING_CONFIG.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.AUTO_CLOSE);
+        MARKUP_PARSING_CONFIG.setCaseSensitive(true);
+        MARKUP_PARSING_CONFIG.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.NO_BALANCING);
         MARKUP_PARSING_CONFIG.setRequireUniqueAttributesInElement(false);
         MARKUP_PARSING_CONFIG.setRequireXmlWellFormedAttributeValues(false);
         MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(MarkupParsingConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
@@ -57,6 +60,19 @@ public class AttoParserVSStandardSAXBenchmark {
         MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setXmlDeclarationPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
         MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setDoctypePresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
         MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setRequireDoctypeKeywordsUpperCase(false);
+
+        HTML_MARKUP_PARSING_CONFIG = new MarkupParsingConfiguration();
+        HTML_MARKUP_PARSING_CONFIG.setCaseSensitive(false);
+        HTML_MARKUP_PARSING_CONFIG.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.AUTO_CLOSE);
+        HTML_MARKUP_PARSING_CONFIG.setRequireUniqueAttributesInElement(false);
+        HTML_MARKUP_PARSING_CONFIG.setRequireXmlWellFormedAttributeValues(false);
+        HTML_MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(MarkupParsingConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
+        HTML_MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setValidateProlog(false);
+        HTML_MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setPrologPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
+        HTML_MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setXmlDeclarationPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
+        HTML_MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setDoctypePresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
+        HTML_MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setRequireDoctypeKeywordsUpperCase(false);
+
     }
 
 
@@ -70,7 +86,8 @@ public class AttoParserVSStandardSAXBenchmark {
         
         final StopWatch sw = new StopWatch();
         boolean started = false;
-        
+
+        int eventCounter = 0;
         for (int i = 0; i < iterations; i++) {
             
             InputStream is = null; 
@@ -101,7 +118,9 @@ public class AttoParserVSStandardSAXBenchmark {
                 parser.reset();
                 
                 sw.suspend();
-                
+
+                eventCounter = handler.getEventCounter();
+
             } finally {
                 try { if (reader != null) reader.close(); } catch (final Exception ignored) { /* ignored */}
                 try { if (is != null) is.close(); } catch (final Exception ignored) { /* ignored */}
@@ -111,7 +130,7 @@ public class AttoParserVSStandardSAXBenchmark {
         
         sw.stop();
         
-        return sw.toString();
+        return "[" + eventCounter + "] " + sw.toString();
         
     }
     
@@ -123,7 +142,8 @@ public class AttoParserVSStandardSAXBenchmark {
         
         final StopWatch sw = new StopWatch();
         boolean started = false;
-        
+
+        int eventCounter = 0;
         for (int i = 0; i < iterations; i++) {
             
             InputStream is = null; 
@@ -133,8 +153,9 @@ public class AttoParserVSStandardSAXBenchmark {
                 
                 is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
                 reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
-                
-                final IMarkupAttoHandler handler = BenchmarkAttoHandlerFactory.getBenchmkarpMarkupAttoHandler();
+
+                final BenchmarkMarkupAttoHandler benchmarkHandler = new BenchmarkMarkupAttoHandler();
+                final IMarkupAttoHandler handler = benchmarkHandler;
 
                 if (started) {
                     sw.resume();
@@ -147,6 +168,8 @@ public class AttoParserVSStandardSAXBenchmark {
                 
                 sw.suspend();
 
+                eventCounter = benchmarkHandler.getEventCounter();
+
             } finally {
                 try { if (reader != null) reader.close(); } catch (final Exception ignored) { /* ignored */}
                 try { if (is != null) is.close(); } catch (final Exception ignored) { /* ignored */}
@@ -155,11 +178,60 @@ public class AttoParserVSStandardSAXBenchmark {
         }
         
         sw.stop();
-        
-        return sw.toString();
+
+        return "[" + eventCounter + "] " + sw.toString();
         
     }
-    
+
+
+
+    public static String attoParserHtmlBenchmark(final String fileName, final int iterations) throws Exception {
+
+        final IMarkupAttoParser parser = new MarkupAttoParser(HTML_MARKUP_PARSING_CONFIG);
+
+        final StopWatch sw = new StopWatch();
+        boolean started = false;
+
+        int eventCounter = 0;
+        for (int i = 0; i < iterations; i++) {
+
+            InputStream is = null;
+            Reader reader = null;
+
+            try {
+
+                is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+                reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
+
+                final BenchmarkMarkupAttoHandler benchmarkHandler = new BenchmarkMarkupAttoHandler();
+                final IMarkupAttoHandler handler = new HtmlMarkupAttoHandler(benchmarkHandler);
+
+                if (started) {
+                    sw.resume();
+                } else {
+                    started = true;
+                    sw.start();
+                }
+
+                parser.parse(reader, handler);
+
+                sw.suspend();
+
+                eventCounter = benchmarkHandler.getEventCounter();
+
+            } finally {
+                try { if (reader != null) reader.close(); } catch (final Exception ignored) { /* ignored */}
+                try { if (is != null) is.close(); } catch (final Exception ignored) { /* ignored */}
+            }
+
+        }
+
+        sw.stop();
+
+        return "[" + eventCounter + "] " + sw.toString();
+
+    }
+
     
 
     public static void attoDOMOutput(final String fileName) throws Exception {
@@ -219,6 +291,7 @@ public class AttoParserVSStandardSAXBenchmark {
                 final String fileName = "test1.html";
                 attoDOMOutput(fileName);
                 final String attoTime = attoParserBenchmark(fileName, iterations);
+                final String attoHtmlTime = attoParserHtmlBenchmark(fileName, iterations);
                 final String saxTime = standardSaxBenchmark(fileName, iterations);
                 final String saxParserClass = getSAXParserClassName();
                 
@@ -227,8 +300,9 @@ public class AttoParserVSStandardSAXBenchmark {
                 System.out.println(" * ITERATIONS: " + iterations);
                 System.out.println(" * SAX Impl.:  " + saxParserClass);
                 System.out.println(" * RESULTS:  ");
-                System.out.println("   > ATTO: " + attoTime);
-                System.out.println("   > SAX: " + saxTime);
+                System.out.println("   > ATTO:       " + attoTime);
+                System.out.println("   > ATTO(HTML): " + attoHtmlTime);
+                System.out.println("   > SAX:        " + saxTime);
                 System.out.println("************\n");
                 
             }
@@ -236,6 +310,7 @@ public class AttoParserVSStandardSAXBenchmark {
             {
                 final String fileName = "test2.html";
                 final String attoTime = attoParserBenchmark(fileName, iterations);
+                final String attoHtmlTime = attoParserHtmlBenchmark(fileName, iterations);
                 final String saxTime = standardSaxBenchmark(fileName, iterations);
                 final String saxParserClass = getSAXParserClassName();
                 
@@ -244,8 +319,9 @@ public class AttoParserVSStandardSAXBenchmark {
                 System.out.println(" * ITERATIONS: " + iterations);
                 System.out.println(" * SAX Impl.:  " + saxParserClass);
                 System.out.println(" * RESULTS:  ");
-                System.out.println("   > ATTO: " + attoTime);
-                System.out.println("   > SAX: " + saxTime);
+                System.out.println("   > ATTO:       " + attoTime);
+                System.out.println("   > ATTO(HTML): " + attoHtmlTime);
+                System.out.println("   > SAX:        " + saxTime);
                 System.out.println("************\n");
 
             }
@@ -253,7 +329,7 @@ public class AttoParserVSStandardSAXBenchmark {
             {
                 final String fileName = "test3.html";
                 final String attoTime = attoParserBenchmark(fileName, iterations);
-                final String saxTime = standardSaxBenchmark(fileName, iterations);
+                final String attoHtmlTime = attoParserHtmlBenchmark(fileName, iterations);
                 final String saxParserClass = getSAXParserClassName();
                 
                 System.out.println("\n***TEST 3***");
@@ -261,8 +337,8 @@ public class AttoParserVSStandardSAXBenchmark {
                 System.out.println(" * ITERATIONS: " + iterations);
                 System.out.println(" * SAX Impl.:  " + saxParserClass);
                 System.out.println(" * RESULTS:  ");
-                System.out.println("   > ATTO: " + attoTime);
-                System.out.println("   > SAX: " + saxTime);
+                System.out.println("   > ATTO:       " + attoTime);
+                System.out.println("   > ATTO(HTML): " + attoHtmlTime);
                 System.out.println("************\n");
 
             }
