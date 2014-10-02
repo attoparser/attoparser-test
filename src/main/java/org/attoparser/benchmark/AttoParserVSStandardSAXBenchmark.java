@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -83,7 +84,48 @@ public class AttoParserVSStandardSAXBenchmark {
         
         final SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         final SAXParser parser = parserFactory.newSAXParser();
-        
+
+
+        /*
+         * WARMUP BEGIN
+         */
+        System.out.println("Warming up phase for SAX STARTED");
+        for (int i = 0; i < 10000; i++) {
+
+            InputStream is = null;
+            Reader reader = null;
+
+            try {
+
+                is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+                reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
+
+                final InputSource inputSource = new InputSource(reader);
+
+                final BenchmarkStandardSaxContentHandler handler = new BenchmarkStandardSaxContentHandler();
+                parser.setProperty(
+                        "http://xml.org/sax/properties/lexical-handler", handler);
+                parser.setProperty(
+                        "http://xml.org/sax/properties/declaration-handler", handler);
+
+                parser.parse(inputSource, handler);
+                parser.reset();
+
+                handler.getEventCounter();
+
+            } finally {
+                try { if (reader != null) reader.close(); } catch (final Exception ignored) { /* ignored */}
+                try { if (is != null) is.close(); } catch (final Exception ignored) { /* ignored */}
+            }
+
+        }
+        /*
+         * WARMUP END
+         */
+        System.out.println("Warming up phase for SAX FINISHED");
+
+
+
         final StopWatch sw = new StopWatch();
         boolean started = false;
 
@@ -139,7 +181,42 @@ public class AttoParserVSStandardSAXBenchmark {
     public static String attoParserBenchmark(final String fileName, final int iterations) throws Exception {
         
         final IMarkupAttoParser parser = new MarkupAttoParser(MARKUP_PARSING_CONFIG);
-        
+
+
+        /*
+         * WARMUP BEGIN
+         */
+        System.out.println("Warming up phase for ATTO STARTED");
+        for (int i = 0; i < 10000; i++) {
+
+            InputStream is = null;
+            Reader reader = null;
+
+            try {
+
+                is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+                reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
+
+                final BenchmarkMarkupAttoHandler benchmarkHandler = new BenchmarkMarkupAttoHandler();
+                final IMarkupAttoHandler handler = benchmarkHandler;
+
+                parser.parse(reader, handler);
+
+                benchmarkHandler.getEventCounter();
+
+            } finally {
+                try { if (reader != null) reader.close(); } catch (final Exception ignored) { /* ignored */}
+                try { if (is != null) is.close(); } catch (final Exception ignored) { /* ignored */}
+            }
+
+        }
+        /*
+         * WARMUP END
+         */
+        System.out.println("Warming up phase for ATTO FINISHED");
+
+
+
         final StopWatch sw = new StopWatch();
         boolean started = false;
 
@@ -188,6 +265,39 @@ public class AttoParserVSStandardSAXBenchmark {
     public static String attoParserHtmlBenchmark(final String fileName, final int iterations) throws Exception {
 
         final IMarkupAttoParser parser = new MarkupAttoParser(HTML_MARKUP_PARSING_CONFIG);
+
+
+        /*
+         * WARMUP BEGIN
+         */
+        System.out.println("Warming up phase for ATTO(HTML) STARTED");
+        for (int i = 0; i < 10000; i++) {
+
+            InputStream is = null;
+            Reader reader = null;
+
+            try {
+
+                is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+                reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
+
+                final BenchmarkMarkupAttoHandler benchmarkHandler = new BenchmarkMarkupAttoHandler();
+                final IMarkupAttoHandler handler = new HtmlMarkupAttoHandler(benchmarkHandler);
+
+                parser.parse(reader, handler);
+
+                benchmarkHandler.getEventCounter();
+
+            } finally {
+                try { if (reader != null) reader.close(); } catch (final Exception ignored) { /* ignored */}
+                try { if (is != null) is.close(); } catch (final Exception ignored) { /* ignored */}
+            }
+
+        }
+        /*
+         * WARMUP END
+         */
+        System.out.println("Warming up phase for ATTO(HTML) FINISHED");
 
         final StopWatch sw = new StopWatch();
         boolean started = false;
@@ -330,12 +440,10 @@ public class AttoParserVSStandardSAXBenchmark {
                 final String fileName = "test3.html";
                 final String attoTime = attoParserBenchmark(fileName, iterations);
                 final String attoHtmlTime = attoParserHtmlBenchmark(fileName, iterations);
-                final String saxParserClass = getSAXParserClassName();
-                
+
                 System.out.println("\n***TEST 3***");
                 System.out.println(" * FILE:       " + fileName);
                 System.out.println(" * ITERATIONS: " + iterations);
-                System.out.println(" * SAX Impl.:  " + saxParserClass);
                 System.out.println(" * RESULTS:  ");
                 System.out.println("   > ATTO:       " + attoTime);
                 System.out.println("   > ATTO(HTML): " + attoHtmlTime);
