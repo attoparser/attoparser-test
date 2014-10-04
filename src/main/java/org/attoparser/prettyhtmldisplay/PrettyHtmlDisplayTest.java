@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.attoparser.html.codedisplay;
+package org.attoparser.prettyhtmldisplay;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -26,11 +26,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
 
-import org.attoparser.MarkupAttoParser;
-import org.attoparser.MarkupParsingConfiguration;
-import org.attoparser.prettyhtmldisplay.PrettyHtmlDisplayMarkupAttoHandler;
+import org.attoparser.MarkupParser;
+import org.attoparser.config.ParseConfiguration;
 
-public class HtmlCodeDisplayTest {
+public class PrettyHtmlDisplayTest {
     
     
     private static final String FILE_NAME_TEST1 = "test1.html";
@@ -43,7 +42,7 @@ public class HtmlCodeDisplayTest {
     public static void main(final String[] args) throws Exception {
         
         if (args.length != 1) {
-            System.err.println("Syntax: java " + HtmlCodeDisplayTest.class.getName() + " [output_folder]");
+            System.err.println("Syntax: java " + PrettyHtmlDisplayTest.class.getName() + " [output_folder]");
             System.exit(1);
         }
         
@@ -79,18 +78,18 @@ public class HtmlCodeDisplayTest {
             test3Writer = new FileWriter(test3File);
             test4Writer = new FileWriter(test4File);
 
-            final PrettyHtmlDisplayMarkupAttoHandler test1Handler = new PrettyHtmlDisplayMarkupAttoHandler(FILE_NAME_TEST1, test1Writer, false);
-            final PrettyHtmlDisplayMarkupAttoHandler test2Handler = new PrettyHtmlDisplayMarkupAttoHandler(FILE_NAME_TEST2, test2Writer, false);
-            final PrettyHtmlDisplayMarkupAttoHandler test3Handler = new PrettyHtmlDisplayMarkupAttoHandler(FILE_NAME_TEST3, test3Writer, false);
-            final PrettyHtmlDisplayMarkupAttoHandler test4Handler = new PrettyHtmlDisplayMarkupAttoHandler(FILE_NAME_TEST4, test4Writer, false);
+            final PrettyHtmlDisplayMarkupHandler test1Handler = new PrettyHtmlDisplayMarkupHandler(FILE_NAME_TEST1, test1Writer, false);
+            final PrettyHtmlDisplayMarkupHandler test2Handler = new PrettyHtmlDisplayMarkupHandler(FILE_NAME_TEST2, test2Writer, false);
+            final PrettyHtmlDisplayMarkupHandler test3Handler = new PrettyHtmlDisplayMarkupHandler(FILE_NAME_TEST3, test3Writer, false);
+            final PrettyHtmlDisplayMarkupHandler test4Handler = new PrettyHtmlDisplayMarkupHandler(FILE_NAME_TEST4, test4Writer, false);
 
-            final MarkupParsingConfiguration config = MarkupParsingConfiguration.defaultHtmlConfiguration();
+            final ParseConfiguration config = ParseConfiguration.defaultHtmlConfiguration();
 
-            final MarkupParsingConfiguration autoCloseConfig = MarkupParsingConfiguration.defaultHtmlConfiguration();
-            autoCloseConfig.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.AUTO_CLOSE);
+            final ParseConfiguration autoCloseConfig = ParseConfiguration.defaultHtmlConfiguration();
+            autoCloseConfig.setElementBalancing(ParseConfiguration.ElementBalancing.AUTO_CLOSE);
 
-            final MarkupAttoParser htmlStandardParser = new MarkupAttoParser(config);
-            final MarkupAttoParser htmlAutoCloseStandardParser = new MarkupAttoParser(autoCloseConfig);
+            final MarkupParser htmlStandardParser = new MarkupParser(config);
+            final MarkupParser htmlAutoCloseStandardParser = new MarkupParser(autoCloseConfig);
 
             htmlStandardParser.parse(test1Reader, test1Handler);
             htmlStandardParser.parse(test2Reader, test2Handler);
@@ -115,7 +114,7 @@ public class HtmlCodeDisplayTest {
     
     
     
-    private HtmlCodeDisplayTest() {
+    private PrettyHtmlDisplayTest() {
         super();
     }
     

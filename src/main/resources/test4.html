@@ -5,7 +5,7 @@
 
   <head>
     <title>Good Thymes Virtual Grocery</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+    <meta http-equiv=Content-Type content="text/html; charset=UTF-8"></meta>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/css" media="all" href="../../css/gtvg.css" th:href="@{/css/gtvg.css}">
   </head>
@@ -31,9 +31,9 @@
       <li><a href="userprofile.html" th:href="@{/userprofile}">See User Profile
     </ol>
       
-    <p>Now you are looking at a <span th:text="'working web application'">template file</span>.</p>
+    <p>Now you are looking at a <span ng-minimized full th:text="'working web application'">template file</span>.</p>
   
-    <div th:include="footer::copy">copy 2011 The Static Templates</div>
+    <div th:include='footer::copy'>copy 2011 The Static Templates</div>
    </p>
 
     <table>

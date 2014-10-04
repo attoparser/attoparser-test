@@ -25,27 +25,28 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-import org.attoparser.MarkupAttoParser;
-import org.attoparser.MarkupParsingConfiguration;
-import org.attoparser.prettyhtmldisplay.PrettyHtmlDisplayMarkupAttoHandler;
+import org.attoparser.MarkupParser;
+import org.attoparser.config.ParseConfiguration;
+import org.attoparser.prettyhtmldisplay.PrettyHtmlDisplayMarkupHandler;
 
 public class HtmlBulkDisplayer {
 
 
-    private static MarkupParsingConfiguration MARKUP_PARSING_CONFIG;
+    private static ParseConfiguration MARKUP_PARSING_CONFIG;
 
     static {
-        MARKUP_PARSING_CONFIG = new MarkupParsingConfiguration();
+        MARKUP_PARSING_CONFIG = new ParseConfiguration();
+        MARKUP_PARSING_CONFIG.setMode(ParseConfiguration.ParsingMode.HTML);
         MARKUP_PARSING_CONFIG.setCaseSensitive(false);
-        MARKUP_PARSING_CONFIG.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.AUTO_CLOSE);
+        MARKUP_PARSING_CONFIG.setElementBalancing(ParseConfiguration.ElementBalancing.AUTO_CLOSE);
         MARKUP_PARSING_CONFIG.setRequireUniqueAttributesInElement(false);
         MARKUP_PARSING_CONFIG.setRequireXmlWellFormedAttributeValues(false);
-        MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(MarkupParsingConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
-        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setValidateProlog(false);
-        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setPrologPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
-        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setXmlDeclarationPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
-        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setDoctypePresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
-        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setRequireDoctypeKeywordsUpperCase(false);
+        MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(ParseConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
+        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setValidateProlog(false);
+        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setPrologPresence(ParseConfiguration.PrologPresence.ALLOWED);
+        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setXmlDeclarationPresence(ParseConfiguration.PrologPresence.ALLOWED);
+        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setDoctypePresence(ParseConfiguration.PrologPresence.ALLOWED);
+        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setRequireDoctypeKeywordsUpperCase(false);
     }
 
 
@@ -66,7 +67,7 @@ public class HtmlBulkDisplayer {
             System.exit(1);
         }
 
-        final MarkupAttoParser parser = new MarkupAttoParser(MARKUP_PARSING_CONFIG);
+        final MarkupParser parser = new MarkupParser(MARKUP_PARSING_CONFIG);
 
         final File displayFolder = new File(testFolder.getAbsolutePath() + File.separator + "display");
         displayFolder.mkdir();
@@ -92,7 +93,7 @@ public class HtmlBulkDisplayer {
             final FileOutputStream testOutputStream = new FileOutputStream(testOutput);
             final OutputStreamWriter testOutputWriter = new OutputStreamWriter(testOutputStream, "UTF-8");
 
-            final PrettyHtmlDisplayMarkupAttoHandler handler = new PrettyHtmlDisplayMarkupAttoHandler(testOutput.getName(), testOutputWriter, true);
+            final PrettyHtmlDisplayMarkupHandler handler = new PrettyHtmlDisplayMarkupHandler(testOutput.getName(), testOutputWriter, true);
 
             System.out.print(fileInTestFolderName);
 

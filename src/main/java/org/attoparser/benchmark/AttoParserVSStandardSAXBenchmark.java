@@ -25,19 +25,17 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.lang.time.StopWatch;
-import org.attoparser.IMarkupAttoParser;
-import org.attoparser.IMarkupAttoHandler;
-import org.attoparser.MarkupAttoParser;
-import org.attoparser.MarkupParsingConfiguration;
-import org.attoparser.dom.DOMBuilderMarkupAttoHandler;
+import org.attoparser.IMarkupHandler;
+import org.attoparser.IMarkupParser;
+import org.attoparser.MarkupParser;
+import org.attoparser.config.ParseConfiguration;
+import org.attoparser.dom.DOMBuilderMarkupHandler;
 import org.attoparser.dom.IDocument;
 import org.attoparser.dom.XmlDOMWriter;
-import org.attoparser.html.HtmlMarkupAttoHandler;
 import org.xml.sax.InputSource;
 
 public class AttoParserVSStandardSAXBenchmark {
@@ -45,34 +43,36 @@ public class AttoParserVSStandardSAXBenchmark {
 
 
 
-    private static MarkupParsingConfiguration MARKUP_PARSING_CONFIG;
-    private static MarkupParsingConfiguration HTML_MARKUP_PARSING_CONFIG;
+    private static ParseConfiguration MARKUP_PARSING_CONFIG;
+    private static ParseConfiguration HTML_MARKUP_PARSING_CONFIG;
 
     static {
 
-        MARKUP_PARSING_CONFIG = new MarkupParsingConfiguration();
+        MARKUP_PARSING_CONFIG = new ParseConfiguration();
+        MARKUP_PARSING_CONFIG.setMode(ParseConfiguration.ParsingMode.XML);
         MARKUP_PARSING_CONFIG.setCaseSensitive(true);
-        MARKUP_PARSING_CONFIG.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.NO_BALANCING);
+        MARKUP_PARSING_CONFIG.setElementBalancing(ParseConfiguration.ElementBalancing.NO_BALANCING);
         MARKUP_PARSING_CONFIG.setRequireUniqueAttributesInElement(false);
         MARKUP_PARSING_CONFIG.setRequireXmlWellFormedAttributeValues(false);
-        MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(MarkupParsingConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
-        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setValidateProlog(false);
-        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setPrologPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
-        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setXmlDeclarationPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
-        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setDoctypePresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
-        MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setRequireDoctypeKeywordsUpperCase(false);
+        MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(ParseConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
+        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setValidateProlog(false);
+        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setPrologPresence(ParseConfiguration.PrologPresence.ALLOWED);
+        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setXmlDeclarationPresence(ParseConfiguration.PrologPresence.ALLOWED);
+        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setDoctypePresence(ParseConfiguration.PrologPresence.ALLOWED);
+        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setRequireDoctypeKeywordsUpperCase(false);
 
-        HTML_MARKUP_PARSING_CONFIG = new MarkupParsingConfiguration();
+        HTML_MARKUP_PARSING_CONFIG = new ParseConfiguration();
+        HTML_MARKUP_PARSING_CONFIG.setMode(ParseConfiguration.ParsingMode.HTML);
         HTML_MARKUP_PARSING_CONFIG.setCaseSensitive(false);
-        HTML_MARKUP_PARSING_CONFIG.setElementBalancing(MarkupParsingConfiguration.ElementBalancing.AUTO_CLOSE);
+        HTML_MARKUP_PARSING_CONFIG.setElementBalancing(ParseConfiguration.ElementBalancing.AUTO_CLOSE);
         HTML_MARKUP_PARSING_CONFIG.setRequireUniqueAttributesInElement(false);
         HTML_MARKUP_PARSING_CONFIG.setRequireXmlWellFormedAttributeValues(false);
-        HTML_MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(MarkupParsingConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
-        HTML_MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setValidateProlog(false);
-        HTML_MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setPrologPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
-        HTML_MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setXmlDeclarationPresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
-        HTML_MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setDoctypePresence(MarkupParsingConfiguration.PrologPresence.ALLOWED);
-        HTML_MARKUP_PARSING_CONFIG.getPrologParsingConfiguration().setRequireDoctypeKeywordsUpperCase(false);
+        HTML_MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(ParseConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
+        HTML_MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setValidateProlog(false);
+        HTML_MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setPrologPresence(ParseConfiguration.PrologPresence.ALLOWED);
+        HTML_MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setXmlDeclarationPresence(ParseConfiguration.PrologPresence.ALLOWED);
+        HTML_MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setDoctypePresence(ParseConfiguration.PrologPresence.ALLOWED);
+        HTML_MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setRequireDoctypeKeywordsUpperCase(false);
 
     }
 
@@ -180,7 +180,7 @@ public class AttoParserVSStandardSAXBenchmark {
 
     public static String attoParserBenchmark(final String fileName, final int iterations) throws Exception {
         
-        final IMarkupAttoParser parser = new MarkupAttoParser(MARKUP_PARSING_CONFIG);
+        final IMarkupParser parser = new MarkupParser(MARKUP_PARSING_CONFIG, false, MarkupParser.DEFAULT_POOL_SIZE, MarkupParser.DEFAULT_BUFFER_SIZE * 2);
 
 
         /*
@@ -197,12 +197,10 @@ public class AttoParserVSStandardSAXBenchmark {
                 is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
                 reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
 
-                final BenchmarkMarkupAttoHandler benchmarkHandler = new BenchmarkMarkupAttoHandler();
-                final IMarkupAttoHandler handler = benchmarkHandler;
-
+                final BenchmarkMarkupHandler handler =  new BenchmarkMarkupHandler();
                 parser.parse(reader, handler);
 
-                benchmarkHandler.getEventCounter();
+                handler.getEventCounter();
 
             } finally {
                 try { if (reader != null) reader.close(); } catch (final Exception ignored) { /* ignored */}
@@ -231,8 +229,8 @@ public class AttoParserVSStandardSAXBenchmark {
                 is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
                 reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
 
-                final BenchmarkMarkupAttoHandler benchmarkHandler = new BenchmarkMarkupAttoHandler();
-                final IMarkupAttoHandler handler = benchmarkHandler;
+                final BenchmarkMarkupHandler benchmarkHandler = new BenchmarkMarkupHandler();
+                final IMarkupHandler handler = benchmarkHandler;
 
                 if (started) {
                     sw.resume();
@@ -264,7 +262,7 @@ public class AttoParserVSStandardSAXBenchmark {
 
     public static String attoParserHtmlBenchmark(final String fileName, final int iterations) throws Exception {
 
-        final IMarkupAttoParser parser = new MarkupAttoParser(HTML_MARKUP_PARSING_CONFIG);
+        final IMarkupParser parser = new MarkupParser(HTML_MARKUP_PARSING_CONFIG, false, MarkupParser.DEFAULT_POOL_SIZE, MarkupParser.DEFAULT_BUFFER_SIZE * 2);
 
 
         /*
@@ -281,12 +279,10 @@ public class AttoParserVSStandardSAXBenchmark {
                 is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
                 reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
 
-                final BenchmarkMarkupAttoHandler benchmarkHandler = new BenchmarkMarkupAttoHandler();
-                final IMarkupAttoHandler handler = new HtmlMarkupAttoHandler(benchmarkHandler);
-
+                final BenchmarkMarkupHandler handler =  new BenchmarkMarkupHandler();
                 parser.parse(reader, handler);
 
-                benchmarkHandler.getEventCounter();
+                handler.getEventCounter();
 
             } finally {
                 try { if (reader != null) reader.close(); } catch (final Exception ignored) { /* ignored */}
@@ -313,8 +309,7 @@ public class AttoParserVSStandardSAXBenchmark {
                 is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
                 reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
 
-                final BenchmarkMarkupAttoHandler benchmarkHandler = new BenchmarkMarkupAttoHandler();
-                final IMarkupAttoHandler handler = new HtmlMarkupAttoHandler(benchmarkHandler);
+                final BenchmarkMarkupHandler handler = new BenchmarkMarkupHandler();
 
                 if (started) {
                     sw.resume();
@@ -327,7 +322,7 @@ public class AttoParserVSStandardSAXBenchmark {
 
                 sw.suspend();
 
-                eventCounter = benchmarkHandler.getEventCounter();
+                eventCounter = handler.getEventCounter();
 
             } finally {
                 try { if (reader != null) reader.close(); } catch (final Exception ignored) { /* ignored */}
@@ -346,7 +341,7 @@ public class AttoParserVSStandardSAXBenchmark {
 
     public static void attoDOMOutput(final String fileName) throws Exception {
         
-        final IMarkupAttoParser parser = new MarkupAttoParser(MARKUP_PARSING_CONFIG);
+        final IMarkupParser parser = new MarkupParser(MARKUP_PARSING_CONFIG);
         
         InputStream is = null; 
         Reader reader = null;
@@ -360,7 +355,7 @@ public class AttoParserVSStandardSAXBenchmark {
 
             sw.start();
             
-            final DOMBuilderMarkupAttoHandler handler = new DOMBuilderMarkupAttoHandler();
+            final DOMBuilderMarkupHandler handler = new DOMBuilderMarkupHandler();
             parser.parse(reader, handler);
             
             final IDocument document = handler.getDocument();
@@ -380,7 +375,7 @@ public class AttoParserVSStandardSAXBenchmark {
     }
     
 
-    private static final String getSAXParserClassName() throws Exception {
+    private static String getSAXParserClassName() throws Exception {
         final SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         final SAXParser parser = parserFactory.newSAXParser();
         return parser.getClass().getName();
