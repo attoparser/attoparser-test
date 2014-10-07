@@ -34,7 +34,6 @@ import org.attoparser.IMarkupParser;
 import org.attoparser.MarkupParser;
 import org.attoparser.config.ParseConfiguration;
 import org.attoparser.dom.DOMBuilderMarkupHandler;
-import org.attoparser.dom.IDocument;
 import org.attoparser.dom.XmlDOMWriter;
 import org.xml.sax.InputSource;
 
