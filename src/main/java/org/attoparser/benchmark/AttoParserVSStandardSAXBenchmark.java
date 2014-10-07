@@ -34,7 +34,8 @@ import org.attoparser.IMarkupParser;
 import org.attoparser.MarkupParser;
 import org.attoparser.config.ParseConfiguration;
 import org.attoparser.dom.DOMBuilderMarkupHandler;
-import org.attoparser.dom.XmlDOMWriter;
+import org.attoparser.dom.DOMWriter;
+import org.attoparser.dom.Document;
 import org.xml.sax.InputSource;
 
 public class AttoParserVSStandardSAXBenchmark {
@@ -357,10 +358,10 @@ public class AttoParserVSStandardSAXBenchmark {
             final DOMBuilderMarkupHandler handler = new DOMBuilderMarkupHandler();
             parser.parse(reader, handler);
             
-            final IDocument document = handler.getDocument();
+            final Document document = handler.getDocument();
             
             final StringWriter writer = new StringWriter();
-            final XmlDOMWriter xmlWriter = new XmlDOMWriter();
+            final DOMWriter xmlWriter = new DOMWriter();
 
             xmlWriter.write(document, writer);
             System.out.println(writer.toString());
@@ -372,7 +373,7 @@ public class AttoParserVSStandardSAXBenchmark {
         }
         
     }
-    
+
 
     private static String getSAXParserClassName() throws Exception {
         final SAXParserFactory parserFactory = SAXParserFactory.newInstance();
