@@ -52,8 +52,8 @@ public class AttoParserVSStandardSAXBenchmark {
         MARKUP_PARSING_CONFIG.setMode(ParseConfiguration.ParsingMode.XML);
         MARKUP_PARSING_CONFIG.setCaseSensitive(true);
         MARKUP_PARSING_CONFIG.setElementBalancing(ParseConfiguration.ElementBalancing.NO_BALANCING);
-        MARKUP_PARSING_CONFIG.setRequireUniqueAttributesInElement(false);
-        MARKUP_PARSING_CONFIG.setRequireXmlWellFormedAttributeValues(false);
+        MARKUP_PARSING_CONFIG.setUniqueAttributesInElementRequired(false);
+        MARKUP_PARSING_CONFIG.setXmlWellFormedAttributeValuesRequired(false);
         MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(ParseConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
         MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setValidateProlog(false);
         MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setPrologPresence(ParseConfiguration.PrologPresence.ALLOWED);
@@ -65,8 +65,8 @@ public class AttoParserVSStandardSAXBenchmark {
         HTML_MARKUP_PARSING_CONFIG.setMode(ParseConfiguration.ParsingMode.HTML);
         HTML_MARKUP_PARSING_CONFIG.setCaseSensitive(false);
         HTML_MARKUP_PARSING_CONFIG.setElementBalancing(ParseConfiguration.ElementBalancing.AUTO_CLOSE);
-        HTML_MARKUP_PARSING_CONFIG.setRequireUniqueAttributesInElement(false);
-        HTML_MARKUP_PARSING_CONFIG.setRequireXmlWellFormedAttributeValues(false);
+        HTML_MARKUP_PARSING_CONFIG.setUniqueAttributesInElementRequired(false);
+        HTML_MARKUP_PARSING_CONFIG.setXmlWellFormedAttributeValuesRequired(false);
         HTML_MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(ParseConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
         HTML_MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setValidateProlog(false);
         HTML_MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setPrologPresence(ParseConfiguration.PrologPresence.ALLOWED);
@@ -180,7 +180,7 @@ public class AttoParserVSStandardSAXBenchmark {
 
     public static String attoParserBenchmark(final String fileName, final int iterations) throws Exception {
         
-        final IMarkupParser parser = new MarkupParser(MARKUP_PARSING_CONFIG, false, MarkupParser.DEFAULT_POOL_SIZE, MarkupParser.DEFAULT_BUFFER_SIZE * 2);
+        final IMarkupParser parser = new MarkupParser(MARKUP_PARSING_CONFIG);
 
 
         /*
@@ -262,7 +262,7 @@ public class AttoParserVSStandardSAXBenchmark {
 
     public static String attoParserHtmlBenchmark(final String fileName, final int iterations) throws Exception {
 
-        final IMarkupParser parser = new MarkupParser(HTML_MARKUP_PARSING_CONFIG, false, MarkupParser.DEFAULT_POOL_SIZE, MarkupParser.DEFAULT_BUFFER_SIZE * 2);
+        final IMarkupParser parser = new MarkupParser(HTML_MARKUP_PARSING_CONFIG);
 
 
         /*
@@ -361,9 +361,8 @@ public class AttoParserVSStandardSAXBenchmark {
             final Document document = handler.getDocument();
             
             final StringWriter writer = new StringWriter();
-            final DOMWriter xmlWriter = new DOMWriter();
 
-            xmlWriter.write(document, writer);
+            DOMWriter.write(document, writer);
             System.out.println(writer.toString());
             sw.stop();
 

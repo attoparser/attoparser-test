@@ -39,8 +39,8 @@ public class HtmlBulkDisplayer {
         MARKUP_PARSING_CONFIG.setMode(ParseConfiguration.ParsingMode.HTML);
         MARKUP_PARSING_CONFIG.setCaseSensitive(false);
         MARKUP_PARSING_CONFIG.setElementBalancing(ParseConfiguration.ElementBalancing.AUTO_CLOSE);
-        MARKUP_PARSING_CONFIG.setRequireUniqueAttributesInElement(false);
-        MARKUP_PARSING_CONFIG.setRequireXmlWellFormedAttributeValues(false);
+        MARKUP_PARSING_CONFIG.setUniqueAttributesInElementRequired(false);
+        MARKUP_PARSING_CONFIG.setXmlWellFormedAttributeValuesRequired(false);
         MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(ParseConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
         MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setValidateProlog(false);
         MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setPrologPresence(ParseConfiguration.PrologPresence.ALLOWED);
