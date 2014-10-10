@@ -48,9 +48,7 @@ public class AttoParserVSStandardSAXBenchmark {
 
     static {
 
-        MARKUP_PARSING_CONFIG = new ParseConfiguration();
-        MARKUP_PARSING_CONFIG.setMode(ParseConfiguration.ParsingMode.XML);
-        MARKUP_PARSING_CONFIG.setCaseSensitive(true);
+        MARKUP_PARSING_CONFIG = ParseConfiguration.xmlConfiguration();
         MARKUP_PARSING_CONFIG.setElementBalancing(ParseConfiguration.ElementBalancing.NO_BALANCING);
         MARKUP_PARSING_CONFIG.setUniqueAttributesInElementRequired(false);
         MARKUP_PARSING_CONFIG.setXmlWellFormedAttributeValuesRequired(false);
@@ -61,9 +59,7 @@ public class AttoParserVSStandardSAXBenchmark {
         MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setDoctypePresence(ParseConfiguration.PrologPresence.ALLOWED);
         MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setRequireDoctypeKeywordsUpperCase(false);
 
-        HTML_MARKUP_PARSING_CONFIG = new ParseConfiguration();
-        HTML_MARKUP_PARSING_CONFIG.setMode(ParseConfiguration.ParsingMode.HTML);
-        HTML_MARKUP_PARSING_CONFIG.setCaseSensitive(false);
+        HTML_MARKUP_PARSING_CONFIG = ParseConfiguration.htmlConfiguration();
         HTML_MARKUP_PARSING_CONFIG.setElementBalancing(ParseConfiguration.ElementBalancing.AUTO_CLOSE);
         HTML_MARKUP_PARSING_CONFIG.setUniqueAttributesInElementRequired(false);
         HTML_MARKUP_PARSING_CONFIG.setXmlWellFormedAttributeValuesRequired(false);

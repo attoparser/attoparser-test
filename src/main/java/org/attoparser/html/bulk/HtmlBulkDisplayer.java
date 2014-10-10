@@ -27,27 +27,11 @@ import java.io.OutputStreamWriter;
 
 import org.attoparser.MarkupParser;
 import org.attoparser.config.ParseConfiguration;
-import org.attoparser.prettyhtmldisplay.PrettyHtmlDisplayMarkupHandler;
+import org.attoparser.prettyhtml.PrettyHtmlMarkupHandler;
 
 public class HtmlBulkDisplayer {
 
 
-    private static ParseConfiguration MARKUP_PARSING_CONFIG;
-
-    static {
-        MARKUP_PARSING_CONFIG = new ParseConfiguration();
-        MARKUP_PARSING_CONFIG.setMode(ParseConfiguration.ParsingMode.HTML);
-        MARKUP_PARSING_CONFIG.setCaseSensitive(false);
-        MARKUP_PARSING_CONFIG.setElementBalancing(ParseConfiguration.ElementBalancing.AUTO_CLOSE);
-        MARKUP_PARSING_CONFIG.setUniqueAttributesInElementRequired(false);
-        MARKUP_PARSING_CONFIG.setXmlWellFormedAttributeValuesRequired(false);
-        MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(ParseConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
-        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setValidateProlog(false);
-        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setPrologPresence(ParseConfiguration.PrologPresence.ALLOWED);
-        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setXmlDeclarationPresence(ParseConfiguration.PrologPresence.ALLOWED);
-        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setDoctypePresence(ParseConfiguration.PrologPresence.ALLOWED);
-        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setRequireDoctypeKeywordsUpperCase(false);
-    }
 
 
 
@@ -67,7 +51,7 @@ public class HtmlBulkDisplayer {
             System.exit(1);
         }
 
-        final MarkupParser parser = new MarkupParser(MARKUP_PARSING_CONFIG);
+        final MarkupParser parser = new MarkupParser(ParseConfiguration.htmlConfiguration());
 
         final File displayFolder = new File(testFolder.getAbsolutePath() + File.separator + "display");
         displayFolder.mkdir();
@@ -93,7 +77,7 @@ public class HtmlBulkDisplayer {
             final FileOutputStream testOutputStream = new FileOutputStream(testOutput);
             final OutputStreamWriter testOutputWriter = new OutputStreamWriter(testOutputStream, "UTF-8");
 
-            final PrettyHtmlDisplayMarkupHandler handler = new PrettyHtmlDisplayMarkupHandler(testOutput.getName(), testOutputWriter, true);
+            final PrettyHtmlMarkupHandler handler = new PrettyHtmlMarkupHandler(testOutput.getName(), testOutputWriter);
 
             System.out.print(fileInTestFolderName);
 

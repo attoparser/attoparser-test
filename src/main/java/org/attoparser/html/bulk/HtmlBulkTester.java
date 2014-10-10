@@ -29,27 +29,10 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.attoparser.MarkupParser;
 import org.attoparser.config.ParseConfiguration;
-import org.attoparser.directoutput.DirectOutputMarkupHandler;
+import org.attoparser.output.OutputMarkupHandler;
 
 public class HtmlBulkTester {
 
-
-    private static ParseConfiguration MARKUP_PARSING_CONFIG;
-
-    static {
-        MARKUP_PARSING_CONFIG = new ParseConfiguration();
-        MARKUP_PARSING_CONFIG.setMode(ParseConfiguration.ParsingMode.HTML);
-        MARKUP_PARSING_CONFIG.setCaseSensitive(false);
-        MARKUP_PARSING_CONFIG.setElementBalancing(ParseConfiguration.ElementBalancing.AUTO_CLOSE);
-        MARKUP_PARSING_CONFIG.setUniqueAttributesInElementRequired(false);
-        MARKUP_PARSING_CONFIG.setXmlWellFormedAttributeValuesRequired(false);
-        MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(ParseConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
-        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setValidateProlog(false);
-        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setPrologPresence(ParseConfiguration.PrologPresence.ALLOWED);
-        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setXmlDeclarationPresence(ParseConfiguration.PrologPresence.ALLOWED);
-        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setDoctypePresence(ParseConfiguration.PrologPresence.ALLOWED);
-        MARKUP_PARSING_CONFIG.getPrologParseConfiguration().setRequireDoctypeKeywordsUpperCase(false);
-    }
 
 
     public static void main(final String[] args) throws Exception {
@@ -68,7 +51,7 @@ public class HtmlBulkTester {
             System.exit(1);
         }
 
-        final MarkupParser parser = new MarkupParser(MARKUP_PARSING_CONFIG);
+        final MarkupParser parser = new MarkupParser(ParseConfiguration.htmlConfiguration());
 
         System.out.println("Using temporary folder for output: " + System.getProperty("java.io.tmpdir"));
 
@@ -89,7 +72,7 @@ public class HtmlBulkTester {
             final FileOutputStream testOutputStream = new FileOutputStream(testOutput);
             final OutputStreamWriter testOutputWriter = new OutputStreamWriter(testOutputStream, "UTF-8");
 
-            final DirectOutputMarkupHandler handler = new DirectOutputMarkupHandler(testOutputWriter);
+            final OutputMarkupHandler handler = new OutputMarkupHandler(testOutputWriter);
 
             System.out.print(fileInTestFolderName);
 

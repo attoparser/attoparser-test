@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.attoparser.prettyhtmldisplay;
+package org.attoparser.prettyhtml;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -78,14 +78,14 @@ public class PrettyHtmlDisplayTest {
             test3Writer = new FileWriter(test3File);
             test4Writer = new FileWriter(test4File);
 
-            final PrettyHtmlDisplayMarkupHandler test1Handler = new PrettyHtmlDisplayMarkupHandler(FILE_NAME_TEST1, test1Writer, false);
-            final PrettyHtmlDisplayMarkupHandler test2Handler = new PrettyHtmlDisplayMarkupHandler(FILE_NAME_TEST2, test2Writer, false);
-            final PrettyHtmlDisplayMarkupHandler test3Handler = new PrettyHtmlDisplayMarkupHandler(FILE_NAME_TEST3, test3Writer, false);
-            final PrettyHtmlDisplayMarkupHandler test4Handler = new PrettyHtmlDisplayMarkupHandler(FILE_NAME_TEST4, test4Writer, false);
+            final PrettyHtmlMarkupHandler test1Handler = new PrettyHtmlMarkupHandler(FILE_NAME_TEST1, test1Writer);
+            final PrettyHtmlMarkupHandler test2Handler = new PrettyHtmlMarkupHandler(FILE_NAME_TEST2, test2Writer);
+            final PrettyHtmlMarkupHandler test3Handler = new PrettyHtmlMarkupHandler(FILE_NAME_TEST3, test3Writer);
+            final PrettyHtmlMarkupHandler test4Handler = new PrettyHtmlMarkupHandler(FILE_NAME_TEST4, test4Writer);
 
-            final ParseConfiguration config = ParseConfiguration.defaultHtmlConfiguration();
+            final ParseConfiguration config = ParseConfiguration.htmlConfiguration();
 
-            final ParseConfiguration autoCloseConfig = ParseConfiguration.defaultHtmlConfiguration();
+            final ParseConfiguration autoCloseConfig = ParseConfiguration.htmlConfiguration();
             autoCloseConfig.setElementBalancing(ParseConfiguration.ElementBalancing.AUTO_CLOSE);
 
             final MarkupParser htmlStandardParser = new MarkupParser(config);
