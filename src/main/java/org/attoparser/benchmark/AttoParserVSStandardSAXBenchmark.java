@@ -50,6 +50,7 @@ public class AttoParserVSStandardSAXBenchmark {
 
         MARKUP_PARSING_CONFIG = ParseConfiguration.xmlConfiguration();
         MARKUP_PARSING_CONFIG.setElementBalancing(ParseConfiguration.ElementBalancing.NO_BALANCING);
+        MARKUP_PARSING_CONFIG.setNoUnmatchedCloseElementsRequired(false);
         MARKUP_PARSING_CONFIG.setUniqueAttributesInElementRequired(false);
         MARKUP_PARSING_CONFIG.setXmlWellFormedAttributeValuesRequired(false);
         MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(ParseConfiguration.UniqueRootElementPresence.NOT_VALIDATED);
@@ -61,6 +62,7 @@ public class AttoParserVSStandardSAXBenchmark {
 
         HTML_MARKUP_PARSING_CONFIG = ParseConfiguration.htmlConfiguration();
         HTML_MARKUP_PARSING_CONFIG.setElementBalancing(ParseConfiguration.ElementBalancing.AUTO_CLOSE);
+        HTML_MARKUP_PARSING_CONFIG.setNoUnmatchedCloseElementsRequired(false);
         HTML_MARKUP_PARSING_CONFIG.setUniqueAttributesInElementRequired(false);
         HTML_MARKUP_PARSING_CONFIG.setXmlWellFormedAttributeValuesRequired(false);
         HTML_MARKUP_PARSING_CONFIG.setUniqueRootElementPresence(ParseConfiguration.UniqueRootElementPresence.NOT_VALIDATED);

@@ -86,7 +86,7 @@ public class PrettyHtmlDisplayTest {
             final ParseConfiguration config = ParseConfiguration.htmlConfiguration();
 
             final ParseConfiguration autoCloseConfig = ParseConfiguration.htmlConfiguration();
-            autoCloseConfig.setElementBalancing(ParseConfiguration.ElementBalancing.AUTO_CLOSE);
+            autoCloseConfig.setElementBalancing(ParseConfiguration.ElementBalancing.AUTO_OPEN_CLOSE);
 
             final MarkupParser htmlStandardParser = new MarkupParser(config);
             final MarkupParser htmlAutoCloseStandardParser = new MarkupParser(autoCloseConfig);
