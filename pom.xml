@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- ======================================================================= -->
-<!--                                                                         -->
-<!--   Copyright (c) 2012-2025 Attoparser (http://www.attoparser.org)        -->
-<!--                                                                         -->
-<!--   Licensed under the Apache License, Version 2.0 (the "License");       -->
-<!--   you may not use this file except in compliance with the License.      -->
-<!--   You may obtain a copy of the License at                               -->
-<!--                                                                         -->
-<!--       http://www.apache.org/licenses/LICENSE-2.0                        -->
-<!--                                                                         -->
-<!--   Unless required by applicable law or agreed to in writing, software   -->
-<!--   distributed under the License is distributed on an "AS IS" BASIS,     -->
-<!--   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or       -->
-<!--   implied. See the License for the specific language governing          -->
-<!--   permissions and limitations under the License.                        -->
-<!--                                                                         -->
-<!-- ======================================================================= -->
+<!--
+  ~ =============================================================================
+  ~
+  ~   Copyright (c) 2012-2025 Attoparser (https://www.attoparser.org)
+  ~
+  ~   Licensed under the Apache License, Version 2.0 (the "License");
+  ~   you may not use this file except in compliance with the License.
+  ~   You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~   Unless required by applicable law or agreed to in writing, software
+  ~   distributed under the License is distributed on an "AS IS" BASIS,
+  ~   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~   See the License for the specific language governing permissions and
+  ~   limitations under the License.
+  ~
+  ~ =============================================================================
+  -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   
@@ -26,79 +28,48 @@
   <packaging>jar</packaging>
   <version>ci</version>
   <name>attoparser-test</name>
-  <url>http://www.attoparser.org</url>
-
   <description>Minimum and fast markup parser for Java</description>
+  <url>https://www.attoparser.org</url>
+
+  <organization>
+    <name>Attoparser</name>
+    <url>https://www.attoparser.org</url>
+  </organization>
 
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
 
-  <organization>
-    <name>Attoparser</name>
-    <url>http://www.attoparser.org</url>
-  </organization>
-  
-  <scm>
-    <url>scm:git:git@github.com:attoparser/attoparser-test.git</url>
-    <connection>scm:git:git@github.com:attoparser/attoparser-test.git</connection>
-    <developerConnection>scm:git:git@github.com:attoparser/attoparser-test.git</developerConnection>
-  </scm>
-  
   <developers>
     <developer>
-      <id>dfernandez</id>
-      <name>Daniel Fernandez</name>
-      <email>daniel.fernandez AT 11thlabs DOT org</email>
-      <roles>
-        <role>Project admin</role>
-      </roles>
+      <name>Attoparser</name>
+      <organization>Attoparser</organization>
+      <organizationUrl>https://www.attoparser.org</organizationUrl>
     </developer>
   </developers>
-  
+
+  <scm>
+    <url>https://github.com/attoparser/attoparser</url>
+    <developerConnection>scm:git:git@github.com:attoparser/attoparser</developerConnection>
+  </scm>
+
   <distributionManagement>
     <snapshotRepository>
       <id>sonatype-nexus-snapshots</id>
       <name>Sonatype Nexus Snapshots</name>
-      <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
     <repository>
       <id>sonatype-nexus-snapshots</id>
       <name>Sonatype Nexus Snapshots</name>
-      <url>http://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
     </repository>
   </distributionManagement>
 
-
-  <build>
-    
-    <testResources>
-      <testResource>
-        <directory>src/test/resources</directory>
-      </testResource>
-    </testResources>
-    
-    <plugins>
-    
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-		<version>2.4</version>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-        </configuration>
-      </plugin>
-
-    </plugins>
-    
-  </build>
-
-  
   <repositories>
     <repository>
       <id>sonatype-nexus-snapshots</id>
@@ -110,40 +81,141 @@
     </repository>
   </repositories>
 
+  <properties>
+    <java.version>8</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <maven.compiler.release>${java.version}</maven.compiler.release>
+    <project.build.sourceEncoding>US-ASCII</project.build.sourceEncoding>
+    <project.build.propertiesEncoding>ISO-8859-1</project.build.propertiesEncoding>
+    <resource.delimiter>@</resource.delimiter>
+    <!-- =========================  -->
+    <!-- Configure JavaDoc plugin   -->
+    <!-- (Avoids JPMS issues.)      -->
+    <!-- =========================  -->
+    <maven.javadoc.source>8</maven.javadoc.source>
+    <maven.javadoc.release>8</maven.javadoc.release>
+    <!-- ======================     -->
+    <!-- DEPENDENCY versions        -->
+    <!-- ======================     -->
+    <attoparser.version>2.0.7-SNAPSHOT</attoparser.version>
+    <commons-lang3.version>3.17.0</commons-lang3.version>
+    <commons-io.version>2.18.0</commons-io.version>
+    <xerces.version>2.12.2</xerces.version>
+    <!-- ======================     -->
+    <!-- MAVEN PLUGIN versions      -->
+    <!-- ======================     -->
+    <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
+    <maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
+    <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+    <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+    <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
+    <maven-failsafe-plugin.version>3.5.2</maven-failsafe-plugin.version>
+  </properties>
+
+
+  <build>
+    
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+      </testResource>
+    </testResources>
+    
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>${maven-clean-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>${maven-dependency-plugin.version}</version>
+      </plugin>
+
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+        <configuration>
+          <!-- This will generate metadata for reflection on method parameters (JDK8+)        -->
+          <parameters>true</parameters>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven-resources-plugin.version}</version>
+        <configuration>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <propertiesEncoding>${project.build.propertiesEncoding}</propertiesEncoding>
+          <delimiters>
+            <!-- We set the resource delimiters to only @*@ in order to avoid the ${*} syntax -->
+            <!-- colliding with properties meant to be resolved by Spring.                    -->
+            <delimiter>${resource.delimiter}</delimiter>
+          </delimiters>
+          <useDefaultDelimiters>false</useDefaultDelimiters>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${maven-failsafe-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+        </configuration>
+      </plugin>
+
+    </plugins>
+    
+  </build>
 
   <dependencies>
     
     <dependency>
       <groupId>org.attoparser</groupId>
       <artifactId>attoparser</artifactId>
-      <version>2.0.7-SNAPSHOT</version>
+      <version>${attoparser.version}</version>
     </dependency>
     
     <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-      <version>2.5</version>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${commons-lang3.version}</version>
     </dependency>
 
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.7</version>
+      <version>${commons-io.version}</version>
     </dependency>
 
     <dependency>
       <groupId>xerces</groupId>
       <artifactId>xercesImpl</artifactId>
-      <version>2.12.2</version>
+      <version>${xerces.version}</version>
     </dependency>
-    
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.1</version>
-      <scope>test</scope>
-    </dependency>
-    
+
     
   </dependencies>
 

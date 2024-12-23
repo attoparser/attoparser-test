@@ -28,7 +28,7 @@ import java.io.StringWriter;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 import org.attoparser.IMarkupHandler;
 import org.attoparser.IMarkupParser;
 import org.attoparser.MarkupParser;
